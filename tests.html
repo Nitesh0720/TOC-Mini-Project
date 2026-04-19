@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Report | Exam Form Processor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">Σ</span>
+          <div>
+            <p class="brand__title">Exam Form Processor</p>
+            <p class="brand__tag">Manual test matrix</p>
+          </div>
+        </div>
+        <nav class="nav" aria-label="Project pages">
+          <a href="index.html" class="nav__link">Form</a>
+          <a href="theory.html" class="nav__link">Theory</a>
+          <a href="tests.html" class="nav__link nav__link--active" aria-current="page">Test report</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="page-hero">
+        <h1>Regex validation test report</h1>
+        <p>
+          Expected outcomes for the same patterns as <code>js/script.js</code>. A plain-text copy:
+          <a href="docs/test-cases.txt">docs/test-cases.txt</a>.
+        </p>
+      </div>
+
+      <section class="content-card">
+        <h2>1. Full name — ^[A-Za-z ]{2,30}$</h2>
+        <table class="tests">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Input</th>
+              <th>Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>V1</td>
+              <td>Ada Lovelace</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V2</td>
+              <td>Alan Turing</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>AB</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>I1</td>
+              <td>A1an (digit)</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I2</td>
+              <td>A (too short)</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I3</td>
+              <td>Jean-Pierre (hyphen)</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="content-card">
+        <h2>2. DOB — ^(0[1-9]|[12]\d|3[01])/(0[1-9]|1[0-2])/\d{4}$</h2>
+        <table class="tests">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Input</th>
+              <th>Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>V1</td>
+              <td>01/01/2000</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V2</td>
+              <td>31/12/1999</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>28/02/2024</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>I1</td>
+              <td>1/1/2000</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I2</td>
+              <td>32/01/2000</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I3</td>
+              <td>2000-01-01</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="content-card">
+        <h2>3. Exam code — ^[A-Z]{2}\d{3}$</h2>
+        <table class="tests">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Input</th>
+              <th>Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>V1</td>
+              <td>CS101</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V2</td>
+              <td>MA042</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>PH000</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>I1</td>
+              <td>Cs101</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I2</td>
+              <td>CS10</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I3</td>
+              <td>C1S01</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="content-card">
+        <h2>4. Hall ticket — ^[A-Z]{3}\d{5}$</h2>
+        <table class="tests">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Input</th>
+              <th>Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>V1</td>
+              <td>ABC12345</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V2</td>
+              <td>XYZ00000</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>TOC98765</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>I1</td>
+              <td>AB12345</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I2</td>
+              <td>ABC1234</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I3</td>
+              <td>abc12345</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="content-card">
+        <h2>5. Subject code — ^[A-Z]{2,3}\d{3}$</h2>
+        <table class="tests">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Input</th>
+              <th>Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>V1</td>
+              <td>CS301</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V2</td>
+              <td>TOC501</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>MA001</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>I1</td>
+              <td>C301</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I2</td>
+              <td>CS30</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I3</td>
+              <td>cs301</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="content-card">
+        <h2>6. Filename — ^.+\.(pdf|jpg|png)$ (i flag in code)</h2>
+        <table class="tests">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Filename</th>
+              <th>Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>V1</td>
+              <td>hall_ticket.pdf</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V2</td>
+              <td>scan.PNG</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>photo.jpg</td>
+              <td><span class="badge badge--ok">Valid</span></td>
+            </tr>
+            <tr>
+              <td>I1</td>
+              <td>notes.docx</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I2</td>
+              <td>image.jpeg</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+            <tr>
+              <td>I3</td>
+              <td>badpdf</td>
+              <td><span class="badge badge--bad">Invalid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Test report — Theory of Computation mini-project.</p>
+    </footer>
+  </body>
+</html>

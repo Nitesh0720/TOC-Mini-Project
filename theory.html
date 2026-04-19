@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Theory | Exam Form Processor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">Σ</span>
+          <div>
+            <p class="brand__title">Exam Form Processor</p>
+            <p class="brand__tag">Regex, languages, automata</p>
+          </div>
+        </div>
+        <nav class="nav" aria-label="Project pages">
+          <a href="index.html" class="nav__link">Form</a>
+          <a href="theory.html" class="nav__link nav__link--active" aria-current="page">Theory</a>
+          <a href="tests.html" class="nav__link">Test report</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="page-hero">
+        <h1>Theory of Computation — theory section</h1>
+        <p>
+          Connects the form validators to formal languages and finite automata. A plain-text copy lives in
+          <a href="docs/theory.txt">docs/theory.txt</a>.
+        </p>
+      </div>
+
+      <article class="content-card">
+        <h2>1. Definition of regular expressions</h2>
+        <p>
+          A <strong>regular expression</strong> (regex) is a finite description of a set of strings over an
+          alphabet. In formal language theory, the class of languages denoted by regular expressions is exactly the
+          <strong>regular languages</strong> (also called Type-3 in the Chomsky hierarchy). Practical regex engines
+          add conveniences (e.g. <code>{2,30}</code>) that still correspond to regular languages when used as bounded
+          repetition over a finite alphabet, as in this project.
+        </p>
+      </article>
+
+      <article class="content-card">
+        <h2>2. Formal language for each field</h2>
+
+        <h3>Full name</h3>
+        <p class="mono-block">
+          L_name = { w in {A-Z, a-z, space}* | 2 &lt;= |w| &lt;= 30 and w matches ^[A-Za-z ]{2,30}$ }
+        </p>
+
+        <h3>Date of birth (syntactic)</h3>
+        <p class="mono-block">
+          L_dob = { w | w = DD/MM/YYYY with '/' separators, DD in 01-31, MM in 01-12, YYYY any four digits }
+        </p>
+
+        <h3>Exam code</h3>
+        <p class="mono-block">
+          L_exam = { w | w is a valid exam code: exactly 2 uppercase Latin letters followed by 3 decimal digits }
+        </p>
+
+        <h3>Hall ticket</h3>
+        <p class="mono-block">
+          L_hall = { w | w = alpha ++ beta, |alpha|=3, alpha in {A-Z}^3, |beta|=5, beta in {0-9}^5 }
+        </p>
+
+        <h3>Subject code</h3>
+        <p class="mono-block">
+          L_subj = { w | w = alpha ++ beta, alpha in {A-Z}^2 U {A-Z}^3, |beta|=3, beta in {0-9}^3 }
+        </p>
+
+        <h3>Uploaded filename</h3>
+        <p class="mono-block">
+          L_file = { f | f ends with ".pdf", ".jpg", or ".png" (case-insensitive in implementation) }
+        </p>
+      </article>
+
+      <article class="content-card">
+        <h2>3. Why each validation is a regular language</h2>
+        <p>
+          Regular languages are closed under union, concatenation, and Kleene star, and are equivalently those
+          accepted by some <strong>finite automaton</strong>. Each field uses only:
+        </p>
+        <ul>
+          <li>finite alphabets (letters, digits, slash, dot),</li>
+          <li>concatenation of fixed-length blocks,</li>
+          <li>bounded repetition (name length 2–30),</li>
+          <li>finite alternation (<code>|</code>) inside day/month alternatives.</li>
+        </ul>
+        <p>
+          Therefore each <code>L_*</code> is regular, and each JavaScript <code>RegExp</code> used here describes a
+          regular language (no unbounded counting beyond what a DFA can track in finitely many states).
+        </p>
+      </article>
+
+      <article class="content-card">
+        <h2>4. DFA / NFA sketches</h2>
+
+        <h3>4a. Mobile-like digit block — exactly five digits</h3>
+        <p>
+          Phone-style identifiers are often digit strings of fixed length. Here: a <strong>DFA</strong> for exactly
+          five digits (the numeric suffix of a hall ticket). States q0..q5; q5 is the only accept state; each
+          transition reads one digit 0–9.
+        </p>
+        <pre class="mono-block">
+States: q0 (start), q1, q2, q3, q4, q5 (accept)
+
+For each i in 0..4: qi --(digit)--> q(i+1)
+
+Reject if string ends before q5 or continues after q5 with another digit.
+
+ASCII:
+   d       d       d       d       d
+(q0)-->(q1)-->(q2)-->(q3)-->(q4)-->((q5))
+        </pre>
+
+        <h3>4b. Exam code — two letters then three digits</h3>
+        <p>Template <code>LLDDD</code> yields a small deterministic chain of states.</p>
+        <pre class="mono-block">
+S0 --[A-Z]--> S1 --[A-Z]--> S2 --[0-9]--> S3 --[0-9]--> S4 --[0-9]--> S5 (ACCEPT)
+
+Reject on wrong symbol class or wrong length.
+
+Example: CS101
+  S0 -C-> S1 -S-> S2 -1-> S3 -0-> S4 -1-> S5 accept
+        </pre>
+
+        <h3>4c. NFA remark</h3>
+        <p>
+          Any DFA is trivially an NFA. For languages built with <code>|</code>, an NFA can branch; subset
+          construction produces an equivalent DFA. Our patterns are already close to deterministic chains plus
+          finite unions (e.g. day/month digit ranges), so a single DFA exists without exponential blow-up for these
+          toy alphabets.
+        </p>
+        <p><a href="index.html">Back to form</a> · <a href="tests.html">Test report</a></p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>Theory section — Theory of Computation mini-project.</p>
+    </footer>
+  </body>
+</html>

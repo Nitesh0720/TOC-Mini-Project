@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Examination Form Processor | TOC &amp; Regex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to form</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">Σ</span>
+          <div>
+            <p class="brand__title">Exam Form Processor</p>
+            <p class="brand__tag">Theory of Computation · Regex validation</p>
+          </div>
+        </div>
+        <nav class="nav" aria-label="Project pages">
+          <a href="index.html" class="nav__link nav__link--active" aria-current="page">Form</a>
+          <a href="theory.html" class="nav__link">Theory</a>
+          <a href="tests.html" class="nav__link">Test report</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <section class="hero">
+        <h1>Online Examination Form</h1>
+        <p class="hero__lead">
+          Client-side validation with JavaScript <code>RegExp</code>. Each constraint is a regular language; see
+          <a href="theory.html">theory.html</a> and <a href="docs/theory.txt">docs/theory.txt</a> for formal
+          definitions and automata sketches.
+        </p>
+      </section>
+
+      <div class="layout">
+        <article class="card card--form" aria-labelledby="form-title">
+          <h2 id="form-title" class="card__title">Registration</h2>
+          <p class="card__hint">Validation runs on blur and while typing. Submit performs a full check.</p>
+
+          <form id="exam-form" class="form" novalidate>
+            <div class="field">
+              <label for="fullName">Full name</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                autocomplete="name"
+                maxlength="30"
+                placeholder="e.g. Ada Lovelace"
+                aria-describedby="fullName-hint fullName-error"
+                aria-invalid="false"
+              />
+              <p id="fullName-hint" class="field__hint">Letters and spaces only, 2–30 characters.</p>
+              <p class="field__counter" aria-live="polite"><span id="name-count">0</span> / 30</p>
+              <p id="fullName-error" class="field__error" role="alert" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="dob">Date of birth</label>
+              <input
+                type="text"
+                id="dob"
+                name="dob"
+                inputmode="numeric"
+                placeholder="DD/MM/YYYY"
+                aria-describedby="dob-hint dob-error"
+                aria-invalid="false"
+              />
+              <p id="dob-hint" class="field__hint">Format DD/MM/YYYY with leading zeros.</p>
+              <p id="dob-error" class="field__error" role="alert" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="examCode">Exam code</label>
+              <input
+                type="text"
+                id="examCode"
+                name="examCode"
+                autocomplete="off"
+                maxlength="5"
+                placeholder="CS101"
+                aria-describedby="examCode-hint examCode-error"
+                aria-invalid="false"
+              />
+              <p id="examCode-hint" class="field__hint">Two uppercase letters and three digits.</p>
+              <p id="examCode-error" class="field__error" role="alert" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="hallTicket">Hall ticket number</label>
+              <input
+                type="text"
+                id="hallTicket"
+                name="hallTicket"
+                autocomplete="off"
+                maxlength="8"
+                placeholder="ABC12345"
+                aria-describedby="hallTicket-hint hallTicket-error"
+                aria-invalid="false"
+              />
+              <p id="hallTicket-hint" class="field__hint">Three uppercase letters and five digits.</p>
+              <p id="hallTicket-error" class="field__error" role="alert" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="subjectCode">Subject code</label>
+              <input
+                type="text"
+                id="subjectCode"
+                name="subjectCode"
+                autocomplete="off"
+                maxlength="6"
+                placeholder="TOC301"
+                aria-describedby="subjectCode-hint subjectCode-error"
+                aria-invalid="false"
+              />
+              <p id="subjectCode-hint" class="field__hint">Two or three uppercase letters and three digits.</p>
+              <p id="subjectCode-error" class="field__error" role="alert" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="document">Supporting document</label>
+              <input
+                type="file"
+                id="document"
+                name="document"
+                accept=".pdf,.jpg,.png,application/pdf"
+                aria-describedby="document-hint document-error document-preview"
+                aria-invalid="false"
+              />
+              <p id="document-hint" class="field__hint">Filename must end with .pdf, .jpg, or .png</p>
+              <p id="document-preview" class="field__preview" aria-live="polite"></p>
+              <p id="document-error" class="field__error" role="alert" hidden></p>
+            </div>
+
+            <div class="form__actions">
+              <button type="submit" id="submit-btn" class="btn btn--primary" disabled>Submit registration</button>
+              <button type="reset" id="reset-btn" class="btn btn--ghost">Clear</button>
+            </div>
+          </form>
+
+          <div id="form-success" class="banner banner--success" hidden role="status" aria-live="polite">
+            <strong>All checks passed.</strong> This demo does not upload to a server; validation illustrates
+            regular constraints only.
+          </div>
+        </article>
+
+        <aside class="card card--aside" aria-label="Regex reference">
+          <h3 class="aside__title">Patterns in use</h3>
+          <ul class="regex-list">
+            <li><span>Name</span><code>^[A-Za-z ]{2,30}$</code></li>
+            <li><span>DOB</span><code>^(0[1-9]|[12]\d|3[01])/(0[1-9]|1[0-2])/\d{4}$</code></li>
+            <li><span>Exam</span><code>^[A-Z]{2}\d{3}$</code></li>
+            <li><span>Hall</span><code>^[A-Z]{3}\d{5}$</code></li>
+            <li><span>Subject</span><code>^[A-Z]{2,3}\d{3}$</code></li>
+            <li><span>File</span><code>^.+\.(pdf|jpg|png)$</code></li>
+          </ul>
+          <p class="aside__note">
+            Plain-text test matrix: <a href="docs/test-cases.txt">docs/test-cases.txt</a>. Project notes:
+            <a href="docs/report.txt">docs/report.txt</a>.
+          </p>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>Mini-project: Theory of Computation — regular expressions and finite automata.</p>
+    </footer>
+
+    <script src="js/script.js" defer></script>
+  </body>
+</html>
