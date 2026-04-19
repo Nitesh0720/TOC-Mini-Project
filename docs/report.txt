@@ -1,0 +1,35 @@
+================================================================================
+PROJECT: Online Examination Form Processor (Regex-Based Web Form Validation)
+SUBJECT: Theory of Computation — practical regular languages & validation
+================================================================================
+
+STRUCTURE
+---------
+  index.html       Main form UI; links css/style.css and js/script.js
+  css/style.css    Layout, theme, responsive card, error/success styling
+  js/script.js     RegExp validation, inline errors, submit/reset behavior
+  theory.html      Theory section (also mirrored in docs/theory.txt)
+  tests.html       Tabular test report (also mirrored in docs/test-cases.txt)
+  docs/report.txt  This file
+  docs/theory.txt  Plain-text theory notes for submission bundles
+  docs/test-cases.txt  Plain-text test matrix
+
+HOW TO RUN
+----------
+  Open index.html in a modern desktop or mobile browser (Chrome, Edge, Firefox).
+  No build step or server is required. For file-upload tests, use local files
+  whose names end in .pdf, .jpg, or .png.
+
+ASSIGNMENT NOTE ON FILENAMES
+----------------------------
+  The brief uses ".+.(pdf|jpg|png)"; the implementation uses a literal dot before
+  the extension: .+\\.(pdf|jpg|png) with the case-insensitive flag so .PDF works.
+
+OPTIONAL ROOT-LEVEL NAMES
+-------------------------
+  If course materials require literal filenames "style.css" and "script.js" in
+  the ZIP root, copy css/style.css -> style.css and js/script.js -> script.js and
+  update index.html link/href paths accordingly.
+
+END
+---

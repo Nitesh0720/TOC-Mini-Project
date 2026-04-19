@@ -1,0 +1,55 @@
+THEORY OF COMPUTATION — THEORY SECTION (PLAIN TEXT)
+Project: Online Examination Form Processor
+================================================================================
+
+1. DEFINITION — REGULAR EXPRESSION
+----------------------------------
+A regular expression is a finite formula describing a set of strings over an
+alphabet. In formal language theory, the languages expressible with regex
+(union, concatenation, Kleene star, and literals over a finite alphabet) are
+exactly the REGULAR LANGUAGES (Type-3). Bounded counts like {2,30} still
+describe regular languages because they expand to finite unions of fixed-length
+concatenations.
+
+2. FORMAL LANGUAGE PER FIELD
+----------------------------
+L_name  = { w | w uses only letters and spaces, 2 <= |w| <= 30 }
+
+L_dob   = { w | w = DD/MM/YYYY, '/' separators, DD in 01-31, MM in 01-12,
+            YYYY any four digits (leap-year logic not enforced by regex alone) }
+
+L_exam  = { w | w consists of 2 uppercase Latin letters followed by 3 digits }
+
+L_hall  = { w | w = alpha ++ beta, |alpha|=3 letters A-Z, |beta|=5 digits 0-9 }
+
+L_subj  = { w | w = alpha ++ beta, alpha has 2 or 3 letters A-Z, beta has 3 digits }
+
+L_file  = { f | filename f ends with .pdf OR .jpg OR .png (case-insensitive) }
+
+3. WHY EACH LANGUAGE IS REGULAR
+-------------------------------
+Each L_* is built from:
+  - finite alphabets,
+  - concatenation of bounded blocks,
+  - finite unions (e.g. day/month digit alternatives),
+  - bounded repetition for name length.
+
+Regular languages are closed under these operations. Hence each validator can be
+realized by a finite automaton with no unbounded memory.
+
+4. DFA SKETCHES
+---------------
+(A) Mobile-like digit block — EXACTLY FIVE DIGITS (hall ticket numeric part)
+    States q0..q5; start q0; accept q5.
+    Transition: qi --digit--> q(i+1) for i=0..4.
+    Too few digits: halt in q0..q4 (reject). Too many: extra digit from q5 (reject).
+
+(B) EXAM CODE — two letters then three digits
+    S0 --A-Z--> S1 --A-Z--> S2 --digit--> S3 --digit--> S4 --digit--> S5 (accept)
+    Wrong class or length => reject.
+
+NFA remark: every DFA is an NFA. For alternation-heavy regexes, an NFA may branch;
+subset construction yields an equivalent DFA.
+
+================================================================================
+See theory.html for the same content with formatting and navigation.

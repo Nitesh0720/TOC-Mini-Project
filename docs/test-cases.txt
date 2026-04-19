@@ -1,0 +1,73 @@
+TEST REPORT — REGEX VALIDATION (EXPECTED OUTCOMES)
+Project: Online Examination Form Processor
+Patterns match js/script.js
+================================================================================
+
+FIELD 1: FULL NAME  ^[A-Za-z ]{2,30}$
+--------------------------------------
+Valid examples:
+  V1  Ada Lovelace          -> Valid
+  V2  Alan Turing           -> Valid
+  V3  AB                    -> Valid
+Invalid examples:
+  I1  A1an                  -> Invalid (digit)
+  I2  A                     -> Invalid (too short)
+  I3  Jean-Pierre           -> Invalid (hyphen)
+
+FIELD 2: DATE OF BIRTH  ^(0[1-9]|[12]\d|3[01])/(0[1-9]|1[0-2])/\d{4}$
+-----------------------------------------------------------------------
+Valid:
+  V1  01/01/2000            -> Valid
+  V2  31/12/1999            -> Valid
+  V3  28/02/2024            -> Valid
+Invalid:
+  I1  1/1/2000              -> Invalid (missing leading zeros)
+  I2  32/01/2000            -> Invalid (day out of range for pattern)
+  I3  2000-01-01            -> Invalid (wrong format)
+
+FIELD 3: EXAM CODE  ^[A-Z]{2}\d{3}$
+------------------------------------
+Valid:
+  V1  CS101                 -> Valid
+  V2  MA042                 -> Valid
+  V3  PH000                 -> Valid
+Invalid:
+  I1  Cs101                 -> Invalid (lowercase)
+  I2  CS10                  -> Invalid (only two digits)
+  I3  C1S01                 -> Invalid (digit inside letter block)
+
+FIELD 4: HALL TICKET  ^[A-Z]{3}\d{5}$
+--------------------------------------
+Valid:
+  V1  ABC12345              -> Valid
+  V2  XYZ00000              -> Valid
+  V3  TOC98765              -> Valid
+Invalid:
+  I1  AB12345               -> Invalid (two letters)
+  I2  ABC1234               -> Invalid (four digits)
+  I3  abc12345              -> Invalid (lowercase)
+
+FIELD 5: SUBJECT CODE  ^[A-Z]{2,3}\d{3}$
+-----------------------------------------
+Valid:
+  V1  CS301                 -> Valid
+  V2  TOC501                -> Valid
+  V3  MA001                 -> Valid
+Invalid:
+  I1  C301                  -> Invalid (one letter)
+  I2  CS30                  -> Invalid (two digits only)
+  I3  cs301                 -> Invalid (lowercase)
+
+FIELD 6: FILENAME  ^.+\.(pdf|jpg|png)$  (case-insensitive flag in code)
+-----------------------------------------------------------------------
+Valid:
+  V1  hall_ticket.pdf       -> Valid
+  V2  scan.PNG              -> Valid
+  V3  photo.jpg             -> Valid
+Invalid:
+  I1  notes.docx            -> Invalid (wrong extension)
+  I2  image.jpeg            -> Invalid (jpeg not in allowed set)
+  I3  badpdf                -> Invalid (no extension)
+
+================================================================================
+See tests.html for the same matrix in table form.
